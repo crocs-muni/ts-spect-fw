@@ -15,30 +15,38 @@
         };
         pythonPackages = with pkgs.python310Packages; [
           venvShellHook
-          jinja2
+          # pyyaml
+          # numpy
+          # jinja2
+          # typing-extensions
         ];
       in
       with pkgs;
       {
-        devShells.default = mkShell {
+        devShells.default = mkShell rec {
           buildInputs = [
             cmake
             clang
             python310
             libxslt
+            libz
           ] ++ pythonPackages;
 
           # TS_REPO_ROOT = builtins.getEnv "PWD"; # unrelable way how to determine the project root path
           venvDir = ".virt";
-          postVenvCreation = ''
-            unset SOURCE_DATE_EPOCH
-            pip install --upgrade pip
-            pip install wheel
-            pip install --requirement requirements.txt
-          '';
+          # postVenvCreation = ''
+          #   unset SOURCE_DATE_EPOCH
+          #   pip install --upgrade pip
+          #   pip install wheel
+          #   pip install --requirement requirements.txt
+          # '';
 
+          LD_LIBRARY_PATH = lib.makeLibraryPath [ libz ];
+
+          # NOTE: Mixing postVenvCreation and shellHook results in only shellHook being called
           shellHook = ''
-            export PATH=$PATH:/home/qup/projects/ts-spect-compiler/build/src/apps;
+            source ${venvDir}/bin/activate
+            export PATH=$PATH:$HOME/projects/ts-spect-compiler/build/src/apps;
             export TS_REPO_ROOT=`pwd`;
           '';
 
