@@ -53,7 +53,7 @@
 .include    ecc_math/curve25519/point_check_curve25519.s
 .include    ecc_math/curve25519/point_xadd_curve25519.s
 .include    ecc_math/curve25519/point_xdbl_curve25519.s
-.include    ecc_math/curve25519/spm_curve25519.s
+.include    ecc_math/curve25519/spm_curve25519_long.s
 .include    ecc_math/curve25519/y_recovery_curve25519.s
 
 ; ====================================================
@@ -106,6 +106,7 @@
 .include    ops/ecdsa_ops.s
 .include    ops/x25519_ops.s
 .include    ops/clear.s
+.include    ops/debug.s
 
 ; ====================================================
 ; Others
